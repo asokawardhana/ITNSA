@@ -19,14 +19,14 @@
 
 - name: Configure BIND9 for master
   template:
-    src: dns/named.conf.local.master.j2
+    src: named.conf.local.master.j2
     dest: "{{ bind_local_config_file }}"
   when: inventory_hostname == master_host
   notify: Restart BIND9
 
 - name: Create zone file for lksn2023.com on master
   template:
-    src: dns/db.lksn2023.com.j2
+    src: db.lksn2023.com.j2
     dest: "{{ zone_config_file }}"
   when: inventory_hostname == master_host
   notify: Restart BIND9

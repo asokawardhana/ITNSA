@@ -15,7 +15,7 @@
 
 - name: Create virtual host configuration template
   template:
-    src: web/intranet.lksn2023.com.j2
+    src: intranet.lksn2023.com.j2
     dest: "{{ nginx_conf_host_intranet }}"
   notify:
     - reload nginx

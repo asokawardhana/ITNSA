@@ -10,14 +10,14 @@
 
 - name: Configure HAProxy
   template:
-    src: /data/ansible/linux/ha/haproxy.cfg.j2
+    src: haproxy.cfg.j2
     dest: "{{ haproxy_config_file }}"
   notify:
     - restart haproxy
 
 - name: Configure Keepalived Master
   template:
-    src: /data/ansible/linux/ha/keepalived.conf.j2
+    src: keepalived.conf.j2
     dest: "{{ keepalived_config_file }}"
   notify:
     - restart keepalived
