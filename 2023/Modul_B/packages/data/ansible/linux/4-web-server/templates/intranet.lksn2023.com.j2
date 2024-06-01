@@ -1,0 +1,11 @@
+server {
+    listen 8081;
+    server_name intranet.lksn2023.com;
+
+    root /var/www/intranet;
+    index index.html;
+
+    location / {
+        try_files $uri $uri/ =404;
+    }
+}

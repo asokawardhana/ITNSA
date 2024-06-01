@@ -1,0 +1,7 @@
+- name: Install and configure web server
+  hosts: web
+  become: yes
+  vars_files:
+    - vault.yml
+  roles:
+    - 4-web-server

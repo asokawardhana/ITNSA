@@ -1,0 +1,44 @@
+---
+# tasks file for 2-dns-server
+- name: Ensure BIND9 is installed
+  apt:
+    name: bind9
+    state: present
+    update_cache: yes
+
+- name: Ensure BIND9 utilities are installed
+  apt:
+    name: bind9utils
+    state: present
+
+- name: Ensure BIND9 is enabled and started
+  service:
+    name: bind9
+    state: started
+    enabled: yes
+
+- name: Configure BIND9 for master
+  template:
+    src: dns/named.conf.local.master.j2
+    dest: "{{ bind_local_config_file }}"
+  when: inventory_hostname == master_host
+  notify: Restart BIND9
+
+- name: Create zone file for lksn2023.com on master
+  template:
+    src: dns/db.lksn2023.com.j2
+    dest: "{{ zone_config_file }}"
+  when: inventory_hostname == master_host
+  notify: Restart BIND9
+
+- name: Configure BIND9 for slave
+  blockinfile:
+    path: "{{ bind_local_config_file }}"
+    block: |
+      zone "lksn2023.com" {
+        type slave;
+        file "{{ zone_config_file }}";
+        masters { {{ master_host_ip }}; };
+      };
+  when: inventory_hostname != master_host
+  notify: Restart BIND9

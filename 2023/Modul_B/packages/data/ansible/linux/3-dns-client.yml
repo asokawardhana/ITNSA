@@ -1,0 +1,7 @@
+- name: Add DNS Nameserver & suffix to /etc/resolv.conf
+  hosts: linux
+  become: yes
+  vars_files:
+    - vault.yml
+  role:
+    - 3-dns-client

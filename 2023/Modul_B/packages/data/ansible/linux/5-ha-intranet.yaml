@@ -1,0 +1,9 @@
+- name: Install and configure Keepalived and HAProxy
+  hosts: ha
+  become: yes
+  vars_files:
+    - vault.yml
+  roles:
+    - 5-ha-intranet
+
+

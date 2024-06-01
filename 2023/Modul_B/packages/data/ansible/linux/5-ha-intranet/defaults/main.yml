@@ -1,0 +1,6 @@
+---
+# defaults file for 5-ha-intranet
+haproxy_config_file: /etc/haproxy/haproxy.cfg
+keepalived_config_file: /etc/keepalived/keepalived.conf
+last_host_first: "{{ groups['ha'][-1] }}"
+last_host_second: "{{ groups['ha'][-2] }}"

@@ -1,0 +1,23 @@
+---
+# tasks file for 5-ha-intranet
+- name: Install required packages
+  apt:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - haproxy
+    - keepalived
+
+- name: Configure HAProxy
+  template:
+    src: /data/ansible/linux/ha/haproxy.cfg.j2
+    dest: "{{ haproxy_config_file }}"
+  notify:
+    - restart haproxy
+
+- name: Configure Keepalived Master
+  template:
+    src: /data/ansible/linux/ha/keepalived.conf.j2
+    dest: "{{ keepalived_config_file }}"
+  notify:
+    - restart keepalived

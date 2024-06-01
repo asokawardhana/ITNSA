@@ -1,0 +1,6 @@
+---
+# handlers file for 2-dns-server
+- name: Restart BIND9
+  service:
+    name: bind9
+    state: restarted

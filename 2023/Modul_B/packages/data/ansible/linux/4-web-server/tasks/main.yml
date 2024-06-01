@@ -1,0 +1,40 @@
+---
+# tasks file for 4-web-server
+- name: Install Nginx
+  apt:
+    name: nginx
+    state: present
+    update_cache: yes
+
+- name: Create HTML file with colored text
+  copy:
+    dest: /var/www/html/index.html
+    content: "{{ html_content }}"
+  notify:
+    - restart nginx
+
+- name: Create virtual host configuration template
+  template:
+    src: web/intranet.lksn2023.com.j2
+    dest: "{{ nginx_conf_host_intranet }}"
+  notify:
+    - reload nginx
+
+- name: Enable Nginx site configuration
+  file:
+    src: "{{ nginx_conf_host_intranet }}"
+    dest: "/etc/nginx/sites-enabled/intranet.lksn2023.com.conf"
+    state: link
+
+- name: Create a directory if it does not exist
+  file:
+    path: /var/www/intranet
+    state: directory
+    mode: '0755'
+
+- name: Create HTML file for intranet
+  copy:
+    dest: /var/www/intranet/index.html
+    content: "{{ html_content_intranet }}"
+  notify:
+    - reload nginx

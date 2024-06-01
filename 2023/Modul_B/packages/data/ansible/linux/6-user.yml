@@ -1,0 +1,9 @@
+- name: Create users from CSV file
+  hosts: linux
+  become: yes
+  vars_files:
+    - vault.yml
+  roles:
+    - 6-user
+
+

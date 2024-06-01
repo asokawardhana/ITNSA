@@ -1,0 +1,11 @@
+zone "lksn2023.com" {
+  type master;
+  file "{{ zone_config_file }}";
+  allow-transfer {
+    {% for _host in groups['dns'] %}
+    {% if master_host != hostvars[_host].inventory_hostname %}
+    {{ hostvars[_host].ansible_host }};
+    {% endif %}
+    {% endfor %}
+  };
+};

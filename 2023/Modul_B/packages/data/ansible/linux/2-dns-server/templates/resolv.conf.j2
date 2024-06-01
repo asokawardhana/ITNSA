@@ -1,0 +1,5 @@
+{% for _host in groups['dns'] %}
+namserver {{ hostvars[_host].ansible_host }}
+{% endfor %}
+search lksn2023.com
+

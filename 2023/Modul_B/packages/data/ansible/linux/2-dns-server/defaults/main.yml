@@ -1,0 +1,6 @@
+---
+# defaults file for 2-dns-server
+bind_local_config_file: /etc/bind/named.conf.local
+zone_config_file: /etc/bind/db.lksn2023.com
+master_host: "{{ groups['dns'][0] }}"
+master_host_ip: "{{ hostvars[master_host].ansible_host }}"

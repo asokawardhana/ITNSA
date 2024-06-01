@@ -1,0 +1,21 @@
+;
+; BIND data file for lksn2023.com
+;
+$TTL    604800
+@       IN      SOA     ns1.lksn2023.com. admin.lksn2023.com. (
+    {{ ansible_date_time.epoch }}         ; Serial
+                           604800         ; Refresh
+                            86400         ; Retry
+                          2419200         ; Expire
+                           604800 )       ; Negative Cache TTL
+;
+@       IN      NS      ns1.lksn2023.com.
+@       IN      NS      ns2.lksn2023.com.
+ns1     IN      A       10.22.0.1
+ns2     IN      A       10.22.0.2
+@       IN      A       10.22.0.1
+intranet IN     A       10.22.0.51
+
+{% for _host in groups['all'] %}
+{{ hostvars[_host].hostname }}   IN  A   {{ hostvars[_host].ansible_host }}
+{% endfor %}

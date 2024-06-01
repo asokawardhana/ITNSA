@@ -1,0 +1,90 @@
+all:
+  hosts:
+      #Linux Hosts
+      LIN1:
+        ansible_host: 10.22.0.1
+        hostname: "APPLIX-LINUXHOST-001"
+        webcolor: "blue"
+      LIN2:
+        ansible_host: 10.22.0.2
+        hostname: "APPLIX-LINUXHOST-002"
+        webcolor: "green"
+      LIN3:
+        ansible_host: 10.22.0.3
+        hostname: "APPLIX-LINUXHOST-003"
+        webcolor: "yellow"
+      LIN4:
+        ansible_host: 10.22.0.4
+        hostname: "APPLIX-LINUXHOST-004"
+        webcolor: "red"
+      LIN5:
+        ansible_host: 10.22.0.5
+        hostname: "APPLIX-LINUXHOST-005"
+        webcolor: "orange"
+      #Windows Hosts
+      WIN1:
+        ansible_host: 10.22.0.101
+        hostname: "PETER"
+        RootCAPriv: true
+      WIN2:
+        ansible_host: 10.22.0.102
+        hostname: "MAX"
+        RootCAPriv: false
+      WIN3:
+        ansible_host: 10.22.0.103
+        hostname: "BEN"
+        RootCAPriv: false
+      WIN4:
+        ansible_host: 10.22.0.104
+        hostname: "ANNA"
+        RootCAPriv: false
+      WIN5:
+        ansible_host: 10.22.0.105
+        hostname: "LISA"
+        RootCAPriv: true
+  children:
+    linux:
+      children:
+        web:
+          hosts:
+            LIN5:
+            LIN2:
+          vars:
+            webport: "8081"
+        ha:
+          hosts:
+            LIN3:
+            LIN1:
+            LIN4:
+        dns:
+          hosts:
+            LIN3:
+            LIN4:
+            LIN2:
+            LIN5:
+        backup:
+          hosts:
+            LIN1:
+        nfs:
+          vars:
+            shares:
+              - name: finance
+                size: 100M
+              - name: hr
+                size: 200M
+          hosts:
+            LIN5:
+    windows:
+      vars:
+        ansible_connection: winrm
+        ansible_port: 5985
+      children:
+        dc:
+          hosts:
+            WIN3:
+            WIN4:
+        iis:
+          hosts:
+            WIN1:
+            WIN2:
+            WIN5:

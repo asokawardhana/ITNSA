@@ -1,0 +1,24 @@
+---
+# defaults file for 4-web-server
+nginx_conf_host_intranet: "/etc/nginx/sites-available/intranet.lksn2023.com.conf"
+html_content: |
+  <!DOCTYPE html>
+  <html>
+  <head>
+    <title>{{ hostname }}</title>
+  </head>
+  <body>
+    <p style="color:{{ webcolor }};">Hello from {{ hostname }}!</p>
+  </body>
+  </html>
+html_content_intranet: |
+  <!DOCTYPE html>
+  <html>
+  <head>
+    <title>intranet.lksn2023.com</title>
+  </head>
+  <body>
+    <h2 style="color:{{ webcolor }};">Welcome to the intranet of LKSN 2023</h2>
+    <h2 style="color:{{ webcolor }};">This site was served by {{ hostname }}</h2>
+  </body>
+  </html>

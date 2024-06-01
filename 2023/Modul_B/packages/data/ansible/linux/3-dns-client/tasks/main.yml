@@ -1,0 +1,12 @@
+---
+# tasks file for 3-dns-client
+- name: Add DNS suffix to /etc/resolv.conf
+  copy:
+    dest: /etc/resolv.conf
+    content: |
+      {% for _host in groups['dns'] %}
+      namserver {{ hostvars[_host].ansible_host }}
+      {% endfor %}
+      search lksn2023.com
+  notify:
+    - restart networking

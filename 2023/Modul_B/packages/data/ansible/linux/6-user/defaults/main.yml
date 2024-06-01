@@ -1,0 +1,4 @@
+---
+# defaults file for 6-user
+local_csv_file: '/etc/ansible/users.csv'
+remote_csv_file: '/tmp/users.csv'

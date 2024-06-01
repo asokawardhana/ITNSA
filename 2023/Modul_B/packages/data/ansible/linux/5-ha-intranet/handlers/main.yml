@@ -1,0 +1,11 @@
+---
+# handlers file for 5-ha-intranet
+- name: restart haproxy
+  service:
+    name: haproxy
+    state: restarted
+
+- name: restart keepalived
+  service:
+    name: keepalived
+    state: restarted

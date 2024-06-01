@@ -1,0 +1,50 @@
+---
+# tasks file for 6-user
+- name: Copy CSV file to remote host
+  copy:
+    src: "{{ local_csv_file }}"
+    dest: "{{ remote_csv_file }}"
+
+- name: Read CSV file on remote host
+  read_csv:
+    path: "{{ remote_csv_file }}"
+    delimiter: ";"
+  register: users
+
+- name: Create users
+  user:
+    name: "{{ item.username }}"
+    uid: "{{ item.uid }}"
+    password: "{{ item.password | password_hash('sha512') }}"
+    home: "{{ item.home }}"
+    state: present
+  with_items: "{{ users.list }}"
+  loop_control:
+    label: "{{ item.username }}"
+
+- name: Set permissions for user home directories
+  file:
+    path: "{{ item.home }}"
+    owner: "{{ item.username }}"
+    group: "{{ item.username }}"
+    state: directory
+    mode: '0755'
+  with_items: "{{ users.list }}"
+  loop_control:
+    label: "{{ item.username }}"
+
+- name: Set permissions for user home directories
+  file:
+    path: "{{ item.home }}"
+    owner: "{{ item.username }}"
+    group: "{{ item.username }}"
+    state: directory
+    mode: '0755'
+  with_items: "{{ users.list }}"
+  loop_control:
+    label: "{{ item.username }}"
+
+- name: Remove CSV file from remote host
+  file:
+    path: "{{ remote_csv_file }}"
+    state: absent

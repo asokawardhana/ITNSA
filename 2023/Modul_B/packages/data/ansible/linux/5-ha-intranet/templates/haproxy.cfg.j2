@@ -1,0 +1,29 @@
+global
+    log /dev/log local0
+    log /dev/log local1 notice
+    chroot /var/lib/haproxy
+    stats socket /run/haproxy/admin.sock mode 660 level admin
+    stats timeout 30s
+    user haproxy
+    group haproxy
+    daemon
+
+defaults
+    log global
+    mode http
+    option httplog
+    option dontlognull
+    timeout connect 5000
+    timeout client 50000
+    timeout server 50000
+
+frontend http_front
+    bind *:80
+    default_backend http_back
+
+backend http_back
+    balance roundrobin
+    http-request add-header x-haproxy-host {{ hostname }}
+    {% for _host in groups['web'] %}
+    server {{ hostvars[_host].hostname }} {{ hostvars[_host].ansible_host }}:8081 check
+    {% endfor %}
